@@ -8,8 +8,7 @@
  - : int = 4
 [*----------------------------------------------------------------------------*)
 
-let square = ()
-
+let square x = (x * x)
 (*----------------------------------------------------------------------------*]
  Funkcija [middle_of_triple] vrne srednji element trojice.
  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -17,7 +16,10 @@ let square = ()
  - : bool = false
 [*----------------------------------------------------------------------------*)
 
-let middle_of_triple = ()
+let middle_of_triple x y z = 
+  let x1 = snd(x, y)
+  in
+  fst(x1, z)
 
 (*----------------------------------------------------------------------------*]
  Funkcija [starting_element] vrne prvi element danega seznama. V primeru
@@ -27,7 +29,9 @@ let middle_of_triple = ()
  - : int = 1
 [*----------------------------------------------------------------------------*)
 
-let starting_element = ()
+let starting_element l = function
+  | [] -> raise
+  | x :: _ -> Some x
 
 (*----------------------------------------------------------------------------*]
  Funkcija [multiply] zmnoži vse elemente seznama. V primeru praznega seznama
