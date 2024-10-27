@@ -29,9 +29,11 @@ let middle_of_triple x y z =
  - : int = 1
 [*----------------------------------------------------------------------------*)
 
-let starting_element l = function
-  | [] -> raise
-  | x :: _ -> Some x
+let starting_element l =
+  match l with
+  | [] -> []
+  | x::_ -> x (*funkcija mi vrne list ampak jaz hocem da mi vrne int*)
+                (*zakaj vraca list namesto int?!*)
 
 (*----------------------------------------------------------------------------*]
  Funkcija [multiply] zmnoži vse elemente seznama. V primeru praznega seznama
@@ -41,8 +43,10 @@ let starting_element l = function
  - : int = 48
 [*----------------------------------------------------------------------------*)
 
-let rec multiply = ()
-
+let rec multiply l =
+  match l with
+  | [] -> []
+  | x::xs -> x * (multiply xs) (*??? zakaj to ni ok*)
 (*----------------------------------------------------------------------------*]
  Napišite funkcijo ekvivalentno python kodi:
 
