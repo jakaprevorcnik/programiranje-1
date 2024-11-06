@@ -69,15 +69,99 @@ let rec odvod p =   (*kako se znebiti nicle spredaj*)
         | x::xs, i -> x * i:: pomozna xs (i + 1) in
     pomozna p 0 (*??ali je boljse s function ali brez??*)
  
-let rec izpis p =
+let rec izpis p = (*treba je se popravit za negativna stevila*)
     let rec pomozna p i =
         let superscript n =
             match n with
             | 0 -> "" | 1 -> "" | 2 -> "²" | 3 -> "³" | 4 -> "⁴"
             | 5 -> "⁵" | 6 -> "⁶" | 7 -> "⁷" | 8 -> "⁸" | 9 -> "⁹"
             | _ -> "^" ^ string_of_int n in
-        match List.rev p , i with
+        match p, i with
         | [], i -> ""
-        | x::xs, 0 -> string_of_int x ^ " " ^  "+" ^ " " ^ pomozna xs (i + 1)
-        | x::xs, i -> string_of_int x ^ "x" ^ superscript i ^ " " ^  "+" ^ " " ^ pomozna xs (i + 1) in
+        | x::xs, 0 -> if x = 0 then pomozna xs (i + 1) else
+             string_of_int x ^ " " ^  "+" ^ " " ^ pomozna xs (i + 1)
+        | x::xs, i -> if x = 1 then "x" ^ superscript i ^ " " ^  "+" ^ " " ^ pomozna xs (i + 1) else (*locimo primer, ko koef = 1*)
+            string_of_int x ^ "x" ^ superscript i ^ " " ^  "+" ^ " " ^ pomozna xs (i + 1) in
     pomozna p 0
+
+(*--------------------------IZOMORFIZMI MNOZIC-------------------------------------*)
+
+let phi1  =
+    function
+    | (a, b) -> (b, a)
+
+let psi1  =
+    function
+    | (b, a) -> (a, b)
+
+(*najprej definiramo prvo in drugo injekcijo*)
+type ('a, 'b) sum = In1 of 'a | In2 of 'b 
+(*zapisemo bijekcji*)
+let phi2 =
+    function
+    | In1 a -> In2 a
+    | In2 b -> In1 b
+
+let psi2 =
+    function
+    | In1 b -> In2 b
+    | In2 a -> In1 a
+
+let phi3 =
+    function (a, (b, c)) -> ((a, b), c)
+
+let psi3 = 
+    function ((a,b), c) -> (a, (b,c))
+
+let phi4 =
+    function
+    | In1 a->  In1 (In1 a)
+    | In2 (In2 c) -> In2 c
+    | In2 (In1 b) -> In1 (In2 b)
+
+let psi4 =
+    function
+    | In1 (In1 a) -> In1 a 
+    | In2 c -> In2 (In2 c)
+    | In1 (In2 b) -> In2 (In1 b)
+
+(*  ??a bi slo tudi tako??
+let phi4' =
+    function 
+    | In1 a -> In1 (In1 a)
+    | In2 b -> 
+        match b with
+        | In1 -> ...
+        | In2 -> ...
+*)
+
+let phi5 =
+    function 
+    | (a, In1 b) -> In1 (a, b)
+    | (a, In2 c) -> In2 (a, c)
+    
+let psi5 =
+    function 
+    | In1 (a, b) -> (a, In1 b)
+    | In2 (a, c) -> (a, In2 c)
+   
+
+    
+    
+
+
+
+
+
+(*--------------------------SAMODEJNO ODVAJANJE-----------------------------------*)
+
+
+(*---------------------------SUBSTITUCIJSKA SIFRA----------------------------------*)
+
+(*import : indeks in crka*)
+let indeks c = Char.code c - Char.code 'A'
+let crka i = Char.chr (i + Char.code 'A') 
+(*--------------------------------------*)
+
+let sifriraj kljuc str =
+    

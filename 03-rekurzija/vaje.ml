@@ -72,7 +72,7 @@ let obrni l =
 let rec map_tlrec f l acc =
   match l with
   | [] -> acc
-  | x::xs -> map_tlrec f xs (f x::acc)    (*nerazumem kaj se tuki dogaja*)
+  | x::xs -> map_tlrec f xs (f x::acc)
   
  
 
@@ -100,12 +100,6 @@ let rec mapi f l i=
  # zip [1; 1; 1; 1] [1; 2; 3; 4; 5];;
  Exception: Failure "Different lengths of input lists.".
 [*----------------------------------------------------------------------------*)
-
-let range _ = ()
-
-let primer_range = range 10
-(* val primer_range : int list = [0; 1; 2; 3; 4; 5; 6; 7; 8; 9; 10] *)
-
 (*----------------------------------------------------------------------------*
  ## Funkcija `map`
 [*----------------------------------------------------------------------------*)
@@ -116,11 +110,14 @@ let primer_range = range 10
  ...`. Pri tem ne smete uporabiti vgrajene funkcije `List.map`.
 [*----------------------------------------------------------------------------*)
 
-let rec map _ _ = ()
+let rec map f l  =
+  match l with
+  | [] -> []
+  | x::xs -> f x::map f xs
 
-let primer_map_1 =
+(*let primer_map_1 =
   let plus_two = (+) 2 in
-  map plus_two [0; 1; 2; 3; 4]
+  map plus_two [0; 1; 2; 3; 4]*)
 (* val primer_map_1 : int list = [2; 3; 4; 5; 6] *)
 
 (*----------------------------------------------------------------------------*
@@ -128,11 +125,16 @@ let primer_map_1 =
  `map`.
 [*----------------------------------------------------------------------------*)
 
-let map_tlrec _ _ = ()
+let map_tlrec f l =
+  let rec aux acc l f=
+    match l with
+    | [] -> acc
+    | x::xs -> aux (f x::acc) xs f in
+  aux [] (List.rev l) f
 
-let primer_map_2 =
-  let plus_two = (+) 2 in
-  map_tlrec plus_two [0; 1; 2; 3; 4]
+(*let primer_map_2 =
+  let plus_two = ( + ) 2 in
+  map_tlrec plus_two [0; 1; 2; 3; 4]*)
 (* val primer_map_2 : int list = [2; 3; 4; 5; 6] *)
 
 (*----------------------------------------------------------------------------*

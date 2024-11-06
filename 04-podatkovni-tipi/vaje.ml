@@ -19,11 +19,12 @@
  Namig: Občudujte informativnost tipov funkcij.
 [*----------------------------------------------------------------------------*)
 
-type euro 
+type euro = Euro of float
 
-type dollar 
+type dollar = Dollar of float
 
 let dollar_to_euro _ = ()
+  
 
 let euro_to_dollar _ = ()
 

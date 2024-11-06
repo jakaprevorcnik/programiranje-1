@@ -45,8 +45,8 @@ let starting_element l =
 
 let rec multiply l =
   match l with
-  | [] -> []
-  | x::xs -> x * (multiply xs) (*??? zakaj to ni ok*)
+  | [] -> 1
+  | x::xs -> x * multiply xs (*??? zakaj to ni ok*)
 (*----------------------------------------------------------------------------*]
  Napišite funkcijo ekvivalentno python kodi:
 
