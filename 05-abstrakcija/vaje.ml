@@ -16,13 +16,19 @@
 [*----------------------------------------------------------------------------*)
 
 module type NAT = sig
-  type t
+  type t 
 
-  val eq  : t -> t -> bool
+
   val zero : t
-  (* Dodajte manjkajoče! *)
-  (* val to_int : t -> int *)
-  (* val of_int : int -> t *)
+  val enica : t
+  val eq  : t -> t -> bool
+
+  (* val odstevanje : t -> t -> t *)
+  val sestevanje : t -> t -> t
+
+  (* val mnozenje : t -> t -> t *)
+  val to_int : t -> int
+  val of_int : int -> t
 end
 
 (*----------------------------------------------------------------------------*
@@ -36,9 +42,17 @@ end
 module Nat_int : NAT = struct
 
   type t = int
-  let eq x y = failwith "later"
   let zero = 0
-  (* Dodajte manjkajoče! *)
+  let eq m n = m = n
+  let sestevanje m n = m + n
+
+  (* let odstevanje m n = if m >= n then m - n else 0 *)
+
+  (* let mnozenje m n = m * n *)
+  let enica = 1
+  let to_int x = x
+
+  let of_int x = if x >= 0 then x else 0
 
 end
 
@@ -52,11 +66,38 @@ end
 [*----------------------------------------------------------------------------*)
 
 module Nat_peano : NAT = struct
+  
+  type t =
+  | Zero
+  | Succ of t
+  let zero = Zero
+  let enica = Succ Zero
+  let rec eq x y = 
+    match x, y with
+    | Zero, Zero -> true
+    | Zero, Succ _-> false
+    | Succ _, Zero -> false
+    | Succ x', Succ y' -> eq x' y' 
+  let rec sestevanje m n =
+    match m, n with
+    | Zero, Zero -> Zero
+    | Zero, n' ->  n'
+    | m', Zero -> m'
+    | Succ m', Succ n' -> sestevanje m' n'
 
-  type t = unit (* To morate spremeniti! *)
-  let eq x y = failwith "later"
-  let zero = () (* To morate spremeniti! *)
-  (* Dodajte manjkajoče! *)
+  (* let rec  mnozenje m n = *)
+
+  (* let odstevanje m n = *)
+
+  let rec  to_int x =
+    match x with 
+    | Zero -> 0
+    | Succ x' -> 1 + to_int x'
+  
+  let rec of_int x = 
+    match x with 
+    | 0 -> Zero
+    | x' -> Succ (of_int (x' - 1))
 
 end
 
@@ -79,7 +120,7 @@ end
 let sum_nat_100 = 
   (* let module Nat = Nat_int in *)
   let module Nat = Nat_peano in
-  Nat.zero (* to popravite na ustrezen izračun *)
+    Nat.zero
   (* |> Nat.to_int *)
 (* val sum_nat_100 : int = 5050 *)
 
