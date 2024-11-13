@@ -37,7 +37,7 @@ let rec filter_mapi f l =
 let rec pocisti p =
     let rec pocisti_acc p acc =
         let rec vsota list =
-            match list with (* zakaj ne dela ce dam function namesto match*)
+            match list with 
             | [] -> 0
             | x::xs -> x + vsota xs in
         match p with
@@ -67,7 +67,7 @@ let rec odvod p =   (*kako se znebiti nicle spredaj*)
         match p, i with
         | [], i -> []
         | x::xs, i -> x * i:: pomozna xs (i + 1) in
-    pomozna p 0 (*??ali je boljse s function ali brez??*)
+    pomozna p 0 
  
 let rec izpis p = (*treba je se popravit za negativna stevila*)
     let rec pomozna p i =
@@ -124,17 +124,6 @@ let psi4 =
     | In1 (In1 a) -> In1 a 
     | In2 c -> In2 (In2 c)
     | In1 (In2 b) -> In2 (In1 b)
-
-(*  ??a bi slo tudi tako??
-let phi4' =
-    function 
-    | In1 a -> In1 (In1 a)
-    | In2 b -> 
-        match b with
-        | In1 -> ...
-        | In2 -> ...
-*)
-
 let phi5 =
     function 
     | (a, In1 b) -> In1 (a, b)
@@ -146,15 +135,61 @@ let psi5 =
     | In2 (a, c) -> (a, In2 c)
    
 
-    
-    
+let phi6 f = 
+    fun x -> (f (In1 x), f (In2 x))
 
+let psi6 (f, g) =
+    function
+    | In1 x -> f x
+    | In2 x -> g x
+
+let psi6 (f, g) = 
+    (fun x -> (f x, g x))
+
+let psi7 f =
+    fun x -> (fst(f x), snd(f x))
+ 
 
 
 
 
 (*--------------------------SAMODEJNO ODVAJANJE-----------------------------------*)
 
+(*import ---------------------------------------------*)
+type odvedljiva = (float -> float) * (float -> float)
+
+let sinus : odvedljiva = (sin, cos)
+let kosinus : odvedljiva = (cos, (fun x -> -. sin x))
+let eksp : odvedljiva = (exp, exp)
+let ( ++. ) : odvedljiva -> odvedljiva -> odvedljiva =
+  (* pozorni bodite, da anonimni funkciji v paru date med oklepaje *)
+  fun (f, f') (g, g') -> ((fun x -> f x +. g x), (fun x -> f' x +. g' x))
+(*------------------------------------------------------------------------------*)
+
+let vrednost : odvedljiva -> float -> float =
+    fun (f, f') -> (fun x -> f x)
+
+let odvod : odvedljiva -> float -> float =
+    fun (f, f') -> (fun x -> f' x)
+
+let konstanta (c : float) : odvedljiva =
+    ((fun x -> c), (fun x -> 0.))
+
+let identiteta x : odvedljiva =
+    ((fun x -> x), (fun x -> 1.))
+
+let ( **. ) : odvedljiva -> odvedljiva -> odvedljiva =
+    fun (f, f') (g, g') -> 
+        ((fun x -> f x *. g x), (fun x -> f' x *. g x +. f x *. g' x))
+
+let ( //. ) : odvedljiva -> odvedljiva -> odvedljiva =
+fun (f, f') (g, g') -> 
+    ((fun x -> f x /. g x), (fun x -> (f' x *. g x -. f x *. g' x) /. (g x *. g x)))
+
+let ( @@. ) : odvedljiva -> odvedljiva -> odvedljiva =
+fun (f, f') (g, g') -> 
+    ((fun x -> f(g x)), (fun x -> f'(g x) *. g' x))
+     
 
 (*---------------------------SUBSTITUCIJSKA SIFRA----------------------------------*)
 
@@ -163,5 +198,9 @@ let indeks c = Char.code c - Char.code 'A'
 let crka i = Char.chr (i + Char.code 'A') 
 (*--------------------------------------*)
 
-let sifriraj kljuc str =
+
+let odsifriraj : string -> string option =
+
+
+
     
