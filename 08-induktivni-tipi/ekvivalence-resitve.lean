@@ -24,6 +24,7 @@ def length {A : Type} : List A → Nat :=
 
 #check (length ["a", "b", "c", "d"])
 
+
 theorem trd1  {A : Type} {x : A} : reverse [x] = [x] :=
   by
     simp [reverse]

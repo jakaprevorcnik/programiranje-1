@@ -17,7 +17,8 @@ Natančno definirajte pogoje, da funkcija `f` uredi seznam.
  # insert 7 [];;
  - : int list = [7]
 [*----------------------------------------------------------------------------*)
-
+(*sprehajas se po seznamu dokler je y majsi od el v seznamu*)
+  
 
 (*----------------------------------------------------------------------------*]
  Prazen seznam je že urejen. Funkcija [insert_sort] uredi seznam tako da
