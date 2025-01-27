@@ -17,14 +17,19 @@ Natančno definirajte pogoje, da funkcija `f` uredi seznam.
  # insert 7 [];;
  - : int list = [7]
 [*----------------------------------------------------------------------------*)
-(*sprehajas se po seznamu dokler je y majsi od el v seznamu*)
-  
-
+(*sprehajas se po seznamu dokler je y manjsi od el v seznamu*)
+let rec insert y xs =
+  match xs with
+  | [] -> []
+  | x :: xs' -> if y < x then y :: xs else x :: insert y xs'
 (*----------------------------------------------------------------------------*]
  Prazen seznam je že urejen. Funkcija [insert_sort] uredi seznam tako da
  zaporedoma vstavlja vse elemente seznama v prazen seznam.
 [*----------------------------------------------------------------------------*)
-
+let rec insert_sort xs =
+  match xs with 
+  | [] -> []
+  | x :: xs' -> 
 
 
 (*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*]
@@ -72,6 +77,9 @@ Natančno definirajte pogoje, da funkcija `f` uredi seznam.
  # test;;
  - : int array = [|0; 4; 2; 3; 1|]
 [*----------------------------------------------------------------------------*)
+
+    
+   
 
 
 (*----------------------------------------------------------------------------*]
